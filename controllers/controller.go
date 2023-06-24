@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	svc "gin_template/services"
+	// svc "gin_template/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -14,14 +14,14 @@ func GetVersion() gin.HandlerFunc {
 	}
 }
 
-func DeleteKey() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		key := c.Param("key")
-		err := svc.DeleteFile(storageFolderPath + key)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"message": "success"})
-		}
-	}
-}
+// func DeleteKey() gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		key := c.Param("key")
+// 		err := svc.DeleteFile(storageFolderPath + key)
+// 		if err != nil {
+// 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		} else {
+// 			c.JSON(http.StatusOK, gin.H{"message": "success"})
+// 		}
+// 	}
+// }
