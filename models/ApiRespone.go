@@ -1,7 +1,7 @@
 package models
 
-type ApiResponse struct {
-	Success bool        `json:"success"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+type UrlResponse struct {
+	Success bool   `json:"success"`
+	Error   string `json:"error"`
+	Url     string `json:"url"`
 }

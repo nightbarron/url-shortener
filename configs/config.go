@@ -2,20 +2,29 @@ package configs
 
 import (
 	"encoding/json"
-	_ "gin_template/models"
 	"io/ioutil"
 	"os"
+	_ "url-shortener/models"
 )
 
-type Config struct {
-	Database struct {
-		User     string `json:"user"`
-		Password string `json:"password"`
-		Database string `json:"database"`
-	} `json:"database"`
+type GlobalConfig struct {
+	MySQL struct {
+		Host         string `json:"HOST"`
+		Port         string `json:"PORT"`
+		User         string `json:"USER"`
+		Pass         string `json:"PASS"`
+		DBNamePrefix string `json:"DB_NAME_PREFIX"`
+		NumberOfDB   int    `json:"NUMBER_OF_DB"`
+	} `json:"MYSQL"`
+	Redis struct {
+		Host string `json:"HOST"`
+		Port string `json:"PORT"`
+		Pass string `json:"PASS"`
+	} `json:"REDIS"`
+	ShortUrlDomain string `json:"SHORT_URL_DOMAIN"`
 }
 
-func (c *Config) Load(configFile string) error {
+func (c *GlobalConfig) Load(configFile string) error {
 	file, err := os.Open(configFile)
 
 	if err != nil {

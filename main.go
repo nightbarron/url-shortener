@@ -1,8 +1,9 @@
-package gin_template
+package main
 
 import (
-	"gin_template/helpers"
-	route "gin_template/routes"
+	"url-shortener/configs"
+	"url-shortener/helpers"
+	route "url-shortener/routes"
 )
 
 func main() {
@@ -11,9 +12,19 @@ func main() {
 	helpers.InitLogger()
 
 	// Init config
-	//ctl.LoadVhostsFromStorage(&vhostList)
+	config := configs.GlobalConfig{}
+	err := config.Load("configs/config.json")
+	if err != nil {
+		return
+	}
 
-	r := route.SetupRouter()
-	r.Run(":8080")
+	// Salt for hashing
+	saltList := []string{}
+
+	r := route.SetupRouter(config, &saltList)
+	err = r.Run(":8080")
+	if err != nil {
+		return
+	}
 
 }
