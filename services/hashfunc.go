@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 	"url-shortener/configs"
+	"url-shortener/models"
 )
 
 func StringHashToNumber(input string, k int) string {
@@ -38,9 +39,11 @@ func generateSalt(length int) string {
 	return string(salt)
 }
 
-func ISDuplicateShortUrl(globalConfig configs.GlobalConfig, shortUrl string) bool {
+func ISDuplicateShortUrl(globalConfig configs.GlobalConfig, shortUrl string, filter *models.BloomFilters) bool {
 	// Check if shortUrl is already in database
-	// su dung bloom filter
+	if (*filter).Check(shortUrl) {
+		return true
+	}
 
 	return false
 }

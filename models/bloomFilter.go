@@ -1,6 +1,8 @@
 package models
 
 import (
+	"crypto/sha256"
+	"crypto/sha512"
 	"hash"
 	"math"
 	"url-shortener/helpers"
@@ -16,8 +18,20 @@ type bloomFilterType struct {
 	size         uint64
 }
 
-// CreateBloomFilter Create bloom filter
-func CreateBloomFilter(hashList []hash.Hash, bitSetSize uint64) BloomFilters {
+func InitBloomFilter() BloomFilters {
+	hashFunctions := []hash.Hash{
+		sha256.New224(),
+		sha256.New(),
+		sha512.New(),
+		sha512.New384(),
+	}
+
+	bloomFilter := createBloomFilter(hashFunctions, math.MaxUint32)
+	return bloomFilter
+}
+
+// createBloomFilter Create bloom filter
+func createBloomFilter(hashList []hash.Hash, bitSetSize uint64) BloomFilters {
 	return &bloomFilterType{
 		bitfield:     make([]bool, bitSetSize),
 		hashFuncList: hashList,

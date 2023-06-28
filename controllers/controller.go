@@ -20,7 +20,7 @@ func GetVersion() gin.HandlerFunc {
 	}
 }
 
-func GenShortUrl(globalConfig configs.GlobalConfig) gin.HandlerFunc {
+func GenShortUrl(globalConfig configs.GlobalConfig, filters *models.BloomFilters) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var urlRequest models.UrlRequest
 		var shortUrlHash string
@@ -53,10 +53,13 @@ func GenShortUrl(globalConfig configs.GlobalConfig) gin.HandlerFunc {
 		// Generate short url
 		shortUrlHash, err = svc.GenShortUrlHash(globalConfig, longUrl)
 
-		for svc.ISDuplicateShortUrl(globalConfig, shortUrlHash) {
+		for svc.ISDuplicateShortUrl(globalConfig, shortUrlHash, filters) {
 			longUrl = svc.AppendSaltToString(longUrl)
 			shortUrlHash, err = svc.GenShortUrlHash(globalConfig, longUrl)
 		}
+
+		// Add short url to bloom filters
+		(*filters).Set(shortUrlHash)
 
 		//// Get database name
 		//dbPostFix := svc.StringHashToNumber(shortUrlHash, globalConfig.MySQL.NumberOfDB)
