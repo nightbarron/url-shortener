@@ -40,6 +40,7 @@ func generateSalt(length int) string {
 
 func ISDuplicateShortUrl(globalConfig configs.GlobalConfig, shortUrl string) bool {
 	// Check if shortUrl is already in database
-	// => Khong nen check vi se lam overload database
+	// su dung bloom filter
+
 	return false
 }
