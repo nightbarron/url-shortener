@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	log "github.com/sirupsen/logrus"
 
 	// svc "gin_template/services"
 
@@ -31,16 +32,19 @@ func GenShortUrl(globalConfig configs.GlobalConfig, filters *models.BloomFilters
 		defer func(Body io.ReadCloser) {
 			err := Body.Close()
 			if err != nil {
+				log.Error("Error when close body: ", err)
 				return
 			}
 		}(c.Request.Body)
 
 		if err != nil {
+			log.Error("Error when read body: ", err)
 			_ = c.AbortWithError(400, err)
 			return
 		}
 		err = json.Unmarshal(body, &urlRequest)
 		if err != nil {
+			log.Error("Error when unmarshal body: ", err)
 			_ = c.AbortWithError(400, err)
 			return
 		}
@@ -61,16 +65,15 @@ func GenShortUrl(globalConfig configs.GlobalConfig, filters *models.BloomFilters
 		// Add short url to bloom filters
 		(*filters).Set(shortUrlHash)
 
-		//// Get database name
-		//dbPostFix := svc.StringHashToNumber(shortUrlHash, globalConfig.MySQL.NumberOfDB)
-		//
-		//err = svc.SaveLongShortToDB(globalConfig, longUrl, shortUrlHash, globalConfig.MySQL.DBNamePrefix+dbPostFix)
-		//
-		//if err != nil {
-		//	c.JSON(http.StatusOK, models.UrlResponse{Success: false, Url: ""})
-		//	return
-		//
-		//}
+		// WORKING WITH DATABASES
+		// Get database name
+		dbPostFix := svc.StringHashToNumber(shortUrlHash, globalConfig.MySQL.NumberOfDB)
+		err = svc.SaveLongShortToDB(globalConfig, longUrl, shortUrlHash, globalConfig.MySQL.DBNamePrefix+dbPostFix)
+		if err != nil {
+			log.Error("Error when save long short url to database: ", err)
+			c.JSON(http.StatusOK, models.UrlResponse{Success: false, Url: ""})
+			return
+		}
 
 		c.JSON(http.StatusOK, models.UrlResponse{Success: true, Url: globalConfig.ShortUrlDomain + shortUrlHash})
 
@@ -89,16 +92,19 @@ func GetLongUrl(globalConfig configs.GlobalConfig) gin.HandlerFunc {
 		defer func(Body io.ReadCloser) {
 			err := Body.Close()
 			if err != nil {
+				log.Error("Error when close body: ", err)
 				return
 			}
 		}(c.Request.Body)
 
 		if err != nil {
+			log.Error("Error when read body: ", err)
 			_ = c.AbortWithError(400, err)
 			return
 		}
 		err = json.Unmarshal(body, &urlRequest)
 		if err != nil {
+			log.Error("Error when unmarshal body: ", err)
 			_ = c.AbortWithError(400, err)
 			return
 		}
@@ -107,6 +113,7 @@ func GetLongUrl(globalConfig configs.GlobalConfig) gin.HandlerFunc {
 
 		longUrl, err := svc.LookUpLongUrl(globalConfig, shortUrl)
 		if err != nil {
+			log.Error("Error when lookup long url: ", err)
 			_ = c.AbortWithError(500, err)
 			return
 		}
@@ -115,15 +122,3 @@ func GetLongUrl(globalConfig configs.GlobalConfig) gin.HandlerFunc {
 
 	}
 }
-
-// func DeleteKey() gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		key := c.Param("key")
-// 		err := svc.DeleteFile(storageFolderPath + key)
-// 		if err != nil {
-// 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-// 		} else {
-// 			c.JSON(http.StatusOK, gin.H{"message": "success"})
-// 		}
-// 	}
-// }

@@ -1,8 +1,8 @@
 {
-  "MYSQL": {"HOST": "<ip>>",
+  "MYSQL": {"HOST": "14.225.255.165",
     "PORT": "3306",
   "USER": "root",
-  "PASS": "<pass>",
+  "PASS": "3SFN1yV7BYYSuHr",
   "DB_NAME_PREFIX": "url_shorten_",
     "NUMBER_OF_DB": 16},
   "REDIS": {

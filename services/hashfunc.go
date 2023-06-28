@@ -41,9 +41,6 @@ func generateSalt(length int) string {
 
 func ISDuplicateShortUrl(globalConfig configs.GlobalConfig, shortUrl string, filter *models.BloomFilters) bool {
 	// Check if shortUrl is already in database
-	if (*filter).Check(shortUrl) {
-		return true
-	}
+	return (*filter).Check(shortUrl)
 
-	return false
 }

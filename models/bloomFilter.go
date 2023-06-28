@@ -49,7 +49,9 @@ func (b *bloomFilterType) Set(value string) {
 
 func (b *bloomFilterType) Check(value string) bool {
 	for _, h := range b.hashFuncList {
-		return b.bitfield[getPosition(helpers.Hashing(h, value), b.size)]
+		if !(b.bitfield[getPosition(helpers.Hashing(h, value), b.size)]) {
+			return false
+		}
 	}
 	return true
 }
