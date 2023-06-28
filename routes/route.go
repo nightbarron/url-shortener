@@ -32,7 +32,7 @@ func SetupRouter(config configs.GlobalConfig, saltList *[]string) *gin.Engine {
 		}
 	})
 
-	//API route for version 1
+	//API route for version 11
 	apiV1 := r.router.Group("/v1/api/url-shorten")
 	apiV1.GET("/version", ctl.GetVersion())
 

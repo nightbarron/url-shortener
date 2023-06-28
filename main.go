@@ -6,6 +6,8 @@ import (
 	route "url-shortener/routes"
 )
 
+// "hash"
+
 func main() {
 
 	// Init log
@@ -19,7 +21,8 @@ func main() {
 	}
 
 	// Salt for hashing
-	saltList := []string{}
+	// @deprecated
+	var saltList []string
 
 	r := route.SetupRouter(config, &saltList)
 	err = r.Run(":8080")

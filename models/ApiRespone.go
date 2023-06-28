@@ -5,3 +5,7 @@ type UrlResponse struct {
 	Error   string `json:"error"`
 	Url     string `json:"url"`
 }
+
+type Filter struct {
+	bitfield [100]bool
+}
