@@ -1,6 +1,6 @@
-# gin_template
+# url-shortener
 
-`gin_template` is a simple yet powerful template for web applications built with the Gin web framework in Go.
+`url-shortener` is a simple yet powerful template for web applications built with the Gin web framework in Go.
 
 ## Getting Started
 
@@ -15,4 +15,4 @@ You need to have Go (1.15 or higher) installed in your local machine.
 First clone the repository:
 
 ```bash
-git clone https://github.com/nightbarron/gin_template.git
+git clone https://github.com/nightbarron/url-shortener.git

@@ -1,15 +1,17 @@
 package routes
 
 import (
-	ctl "gin_template/controllers"
 	"github.com/gin-gonic/gin"
+	"url-shortener/configs"
+	ctl "url-shortener/controllers"
+	"url-shortener/models"
 )
 
 type Routes struct {
 	router *gin.Engine
 }
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(config configs.GlobalConfig, bloomFilter *models.BloomFilters) *gin.Engine {
 
 	r := Routes{
 		router: gin.Default(),
@@ -31,10 +33,13 @@ func SetupRouter() *gin.Engine {
 		}
 	})
 
-	//API route for version 1
-	apiV1 := r.router.Group("/v1/api/template")
+	//API route for version 11
+	apiV1 := r.router.Group("/v1/api/url-shorten")
 	apiV1.GET("/version", ctl.GetVersion())
-	apiV1.DELETE("/key/:key", ctl.DeleteKey())
+
+	apiV1.POST("/genshorturl", ctl.GenShortUrl(config, bloomFilter))
+
+	apiV1.GET("/getlongurl", ctl.GetLongUrl(config))
 
 	return r.router
 

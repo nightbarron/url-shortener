@@ -1,7 +1,14 @@
 {
-  "database": {
-    "user": "dbuser",
-    "password": "dbpassword",
-    "database": "dbname"
-  }
+  "MYSQL": {"HOST": "14.225.255.165",
+    "PORT": "3306",
+  "USER": "root",
+  "PASS": "<pass>",
+  "DB_NAME_PREFIX": "url_shorten_",
+    "NUMBER_OF_DB": 16},
+  "REDIS": {
+    "HOST": "127.0.0.1",
+    "PORT": "6389",
+    "PASS": ""
+  },
+  "SHORT_URL_DOMAIN": "https://sh.url/"
 }
