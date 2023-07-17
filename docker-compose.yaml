@@ -1,0 +1,28 @@
+version: "3"
+services:
+
+  nginx:
+    image: nginx:stable-bullseye
+    volumes:
+      - shared-data:/etc/nginx/conf.d
+    ports:
+        - 80:80
+        - 443:443
+
+  mysql:
+    image: mysql:latest
+#    ports:
+#      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=3SFN1yV7BYYSuHr
+
+  urlShortener:
+    image: private.tuandlh.site/nightbarron/url-shortener:tuandlh-v1
+    volumes:
+      - shared-data:/etc/nginx/conf.d
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8080:8080
+
+volumes:
+  shared-data:

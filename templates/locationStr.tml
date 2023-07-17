@@ -1,0 +1,5 @@
+location /{{ shortUrl }} {
+    return 301 {{ longUrl }};
+}
+
+# {{ location }}

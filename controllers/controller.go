@@ -52,7 +52,7 @@ func GenShortUrl(globalConfig configs.GlobalConfig, filters *models.BloomFilters
 		longUrl := urlRequest.Url + ip
 
 		// Check if longUrl is already in database
-		// => Khong nen check vi se lam overload database
+		// => khong nen check vi se lam overload database
 
 		// Generate short url
 		shortUrlHash, err = svc.GenShortUrlHash(globalConfig, longUrl)
@@ -71,6 +71,14 @@ func GenShortUrl(globalConfig configs.GlobalConfig, filters *models.BloomFilters
 		err = svc.SaveLongShortToDB(globalConfig, longUrl, shortUrlHash, globalConfig.MySQL.DBNamePrefix+dbPostFix)
 		if err != nil {
 			log.Error("Error when save long short url to database: ", err)
+			c.JSON(http.StatusOK, models.UrlResponse{Success: false, Url: ""})
+			return
+		}
+
+		// Apply to Nginx
+		err = svc.ApplyToNginx(globalConfig, shortUrlHash, longUrl)
+		if err != nil {
+			log.Error("Error when apply to nginx: ", err)
 			c.JSON(http.StatusOK, models.UrlResponse{Success: false, Url: ""})
 			return
 		}

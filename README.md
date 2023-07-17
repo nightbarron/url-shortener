@@ -16,3 +16,4 @@ First clone the repository:
 
 ```bash
 git clone https://github.com/nightbarron/url-shortener.git
+docker build -t private.tuandlh.site/nightbarron/url-shortener:tuandlh-v1 . && docker compose up

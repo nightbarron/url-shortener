@@ -27,3 +27,17 @@ func Hashing(h hash.Hash, value string) int64 {
 	h.Reset()
 	return result
 }
+
+func ReadFile(path string) (string, []byte) {
+	log.Info("Reading file: ", path)
+	// Read content from file
+	var file []byte = nil
+	var err error
+	file, err = os.ReadFile(path)
+	//os.Stdout.Write(file)
+	if err != nil {
+		log.Error("Fail to read in ", path)
+		return "Fail to read in " + path, nil
+	}
+	return string(file), file
+}
